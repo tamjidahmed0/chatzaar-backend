@@ -4,16 +4,20 @@ import mongoose from "mongoose";
 
 
 const messageSchema = new mongoose.Schema({
- data:{
+  _id: {
+    type: mongoose.Schema.Types.ObjectId,
+    auto: false,
+
+  },
+
+  data: {
     type: Object
- },
+  },
+  userId: {
+    type: mongoose.Types.ObjectId
+  }
 
- conversationId:{
-   type: mongoose.Types.ObjectId
- }
-
-
-})
+}, { timestamps: true })
 
 
 

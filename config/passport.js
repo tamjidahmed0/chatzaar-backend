@@ -16,13 +16,15 @@ passport.use(
     },
     async (accessToken, refreshToken, profile, done) => {
     
-      const token = jwt.sign(
-        { email: profile.emails[0].value },
-        process.env.JWT_SECRET, 
-        { expiresIn: "1d" } 
-      );
+      // const token = jwt.sign(
+      //   { email: profile.emails[0].value },
+      //   process.env.JWT_SECRET, 
+      //   { expiresIn: "1d" } 
+      // );
     
       const check_user = await User.findOne({email:profile.emails[0].value})
+
+      let userId;
 
       if(check_user === null){
       const newUser =  await new User({
@@ -31,10 +33,21 @@ passport.use(
             photo:profile.photos[0].value
           }).save()
 
-          return done(null, { profile, token, id: newUser._id });
+          userId = newUser._id;
+
+          // return done(null, { profile, token, id: newUser._id });
       }else{
-        return done(null, { profile, token , id: check_user._id});
+        // return done(null, { profile, token , id: check_user._id});
+        userId = check_user._id;
       }
+
+      const token = jwt.sign(
+        { email: profile.emails[0].value, id: userId }, // Include userId (_id)
+        process.env.JWT_SECRET,
+        { expiresIn: "1d" }
+      );
+      
+      return done(null, { profile, token, id: userId });
 
     
 

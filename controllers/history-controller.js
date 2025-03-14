@@ -1,20 +1,22 @@
-import Conversation from "../schema/conversations.js"
+import Message from "../schema/messages.js";
 
 
 const historyController = async (req, res) => {
+  const userIdFromHeader = req.headers['user_id'];
 
-    const userId = req.params.id
+
+  try {
+    const get_conversation =  (await Message.find({ userId: userIdFromHeader })).reverse()
+   
+
+    res.status(201).send(get_conversation) 
 
 
-    try {
-        const get_conversation = await Conversation.find({
-            "data.userId": userId
-        }).sort({ _id: -1 });
-        res.status(201).send(get_conversation)
 
-    } catch (error) {
 
-    }
+  } catch (error) {
+    console.log(error)
+  }
 
 }
 

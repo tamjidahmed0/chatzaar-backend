@@ -1,70 +1,54 @@
 import axios from "axios"
 import Message from "../schema/messages.js"
-import Conversation from "../schema/conversations.js"
-import mongoose from "mongoose"
 import dotenv from 'dotenv'
 dotenv.config()
 
 const Chats = async (req, res) => {
-    const { user_id, auth_token } = req.headers
     const { conversationId } = req.query
     const data = req.body;
-    const content = data.messages[0].content
-
+    const userIdFromHeader = req.headers['user_id'];
 
     try {
         if (!data) {
             return res.status(400).json({ error: "Content is required" });
         }
 
-        const response = await axios.post(`${process.env.ECHOGGPT_URI}`,
-            data,
-            { headers: { 'x-api-key': process.env.ECHOGPT_API_KEY } }
-        );
-       
+ 
+        const check_existence = await Message.findOne({ _id: conversationId });
 
-
-        const check_conversation = await Conversation.findOne({
-            'data.conversationId': conversationId
-        })
-
-
-
-        if (check_conversation === null) {
-
-            const save_conversation = await new Conversation({
-                data: {
-
-                    userId: user_id,
-                    content: content
-                }
-            }).save()
-
-
-            await new Message({ data, conversationId: save_conversation.data.conversationId }).save()
-            await new Message({ data: response.data, conversationId: save_conversation.data.conversationId }).save()
-
+        if (check_existence === null) {
+            const response = await axios.post(`${process.env.AI_URI}`,
+                data,
+                { headers: { 'authorization': process.env.AI_API_KEY } } 
+            );
+            const save_message = await new Message({_id:conversationId, data, userId: userIdFromHeader }).save()
+            await Message.findOneAndUpdate({ _id: save_message._id }, { $push: { "data.messages": response.data.choices[0].message } })
+            res.status(201).send(response.data.choices[0].message)
 
         } else {
 
-            await new Message({ data, conversationId: conversationId }).save()
-            await new Message({ data: response.data, conversationId: conversationId }).save()
+            const response = await axios.post(`${process.env.AI_URI}`,
+                {
+                    messages: [...check_existence.data.messages, ...data.messages],
+                    model: data.model
+                },
 
+                { headers: { 'authorization': process.env.AI_API_KEY } }
+            );
+
+            const save_message = await Message.findOneAndUpdate({ _id: conversationId }, { $push: { "data.messages": data.messages[0] } })
+            await Message.findOneAndUpdate({ _id: save_message._id }, { $push: { "data.messages": response.data.choices[0].message } })
+
+
+            console.log(response.data, 'else block')
+            res.status(201).send(response.data.choices[0].message)
 
 
         }
 
 
-
-
-        res.status(201).send(response.data)
-
-
-
-
-
-
     } catch (error) {
+        console.log(error.message, 'error')
         res.status(500).send({ msg: "Error" })
     }
 
