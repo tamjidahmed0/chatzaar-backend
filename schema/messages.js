@@ -12,8 +12,8 @@ const messageSchema = new mongoose.Schema({
 
   data: {
     type: Object
-  },
-  userId: {
+  }, 
+  userId: { 
     type: mongoose.Types.ObjectId
   }
 

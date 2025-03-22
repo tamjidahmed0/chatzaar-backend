@@ -7,12 +7,13 @@ const Chats = async (req, res) => {
     const { conversationId } = req.query
     const data = req.body;
     const userIdFromHeader = req.headers['user_id'];
-
+    console.log(data)
+ 
     try {
         if (!data) {
             return res.status(400).json({ error: "Content is required" });
         }
-
+  
  
         const check_existence = await Message.findOne({ _id: conversationId });
 

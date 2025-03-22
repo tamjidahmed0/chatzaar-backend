@@ -6,9 +6,13 @@ import passport from "passport";
 import profile from "../controllers/profile.js";
 import validateToken from "../middleware/validateToken.js";
 import deleteHistory from "../controllers/delete-history.js";
+import healthController from "../controllers/healthController.js";
+
 
 const router = Router()
 
+
+router.route('/health').get( healthController);
 
 router.route('/chats').post(validateToken, Chats);
 router.route('/history').get(validateToken, historyController);

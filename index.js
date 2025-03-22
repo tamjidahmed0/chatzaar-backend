@@ -7,13 +7,17 @@ import connectDB from './database/db.config.js';
 import dotenv from 'dotenv'
 dotenv.config()
 import './config/passport.js'
+import spinUp from './services/spinUp.js';
+
+
+spinUp()
 
 
 const app = express()
 const PORT =  process.env.PORT || 4000
 
 app.use(cors());
-app.use(express.json());  
+app.use(express.json());   
 app.use(express.urlencoded({ extended: true }));  
 app.disable('x-powered-by');
 
