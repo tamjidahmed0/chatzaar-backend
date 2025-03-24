@@ -9,7 +9,7 @@ const deleteHistory = async (req, res) => {
             userId
         });
 
-        const updatedMessages = await Message.find({ userId });
+        const updatedMessages = (await Message.find({ userId })).reverse();
 
         res.status(201).send(updatedMessages)
 
