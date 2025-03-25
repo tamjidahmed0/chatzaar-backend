@@ -7,14 +7,12 @@ const Chats = async (req, res) => {
     const { conversationId } = req.query
     const data = req.body;
     const userIdFromHeader = req.headers['user_id'];
-    console.log(data)
  
     try {
         if (!data) {
             return res.status(400).json({ error: "Content is required" });
         }
   
- 
         const check_existence = await Message.findOne({ _id: conversationId });
 
         if (check_existence === null) {
@@ -40,8 +38,6 @@ const Chats = async (req, res) => {
             const save_message = await Message.findOneAndUpdate({ _id: conversationId }, { $push: { "data.messages": data.messages[0] } })
             await Message.findOneAndUpdate({ _id: save_message._id }, { $push: { "data.messages": response.data.choices[0].message } })
 
-
-            console.log(response.data, 'else block')
             res.status(201).send(response.data.choices[0].message)
 
 
