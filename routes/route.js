@@ -9,7 +9,7 @@ import deleteHistory from "../controllers/delete-history.js";
 import healthController from "../controllers/healthController.js";
 
 
-const router = Router()
+const router = Router() 
 
 
 router.route('/health').get( healthController);
