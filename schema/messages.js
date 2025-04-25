@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { mongo } from "mongoose";
 
 
 
@@ -9,10 +9,10 @@ const messageSchema = new mongoose.Schema({
     auto: false,
 
   },
-
   data: {
     type: Object
   }, 
+
   userId: { 
     type: mongoose.Types.ObjectId
   }

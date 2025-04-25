@@ -7,7 +7,7 @@ import profile from "../controllers/profile.js";
 import validateToken from "../middleware/validateToken.js";
 import deleteHistory from "../controllers/delete-history.js";
 import healthController from "../controllers/healthController.js";
-
+import credit from "../controllers/credit.js";
 
 const router = Router() 
 
@@ -18,8 +18,10 @@ router.route('/chats').post(validateToken, Chats);
 router.route('/history').get(validateToken, historyController);
 
 router.route('/all-messages/:id').get(validateToken, getAllMessage);
+router.route('/credit').get(validateToken, credit);
 router.route('/profile/:id').get(validateToken, profile);
 router.route('/delete-history/:id').delete(validateToken, deleteHistory);
+
 
 router.route('/auth/google').get(passport.authenticate("google", { scope: ["profile", "email"] }))
 router.route('/auth/google/callback').get(passport.authenticate("google", { failureRedirect: "/" }), (req, res) => {

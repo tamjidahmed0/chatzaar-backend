@@ -8,9 +8,15 @@ import dotenv from 'dotenv'
 dotenv.config()
 import './config/passport.js'
 import spinUp from './services/spinUp.js';
+import credit from './migrations/credit.js'
 
 
-spinUp()
+
+if(process.env.NODE_ENV === 'production'){
+  spinUp() 
+}
+
+
 
 
 const app = express()
@@ -40,11 +46,14 @@ app.use('/api', router)
 app.listen(PORT, async()=>{
 console.log(`server connected to port ${PORT}`)
 
-
 const db_connection = await connectDB()
+
 
 if (db_connection) {
   console.log('mongodb connected')
+
+  await credit()
+  
 } else {
   console.log('mongodb not connected')
 }
