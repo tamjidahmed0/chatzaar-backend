@@ -100,7 +100,6 @@ const Chats = async (req, res) => {
                     { new: true }
                 );
 
-                console.log(reminingCredits, 'line 101')
                 res.status(201).send({message, credits:reminingCredits.credits});
             }
 

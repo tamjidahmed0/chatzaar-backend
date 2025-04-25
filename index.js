@@ -8,8 +8,6 @@ import dotenv from 'dotenv'
 dotenv.config()
 import './config/passport.js'
 import spinUp from './services/spinUp.js';
-import credit from './migrations/credit.js'
-
 
 
 if(process.env.NODE_ENV === 'production'){
@@ -52,8 +50,6 @@ const db_connection = await connectDB()
 if (db_connection) {
   console.log('mongodb connected')
 
-  await credit()
-  
 } else {
   console.log('mongodb not connected')
 }
