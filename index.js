@@ -7,12 +7,8 @@ import connectDB from './database/db.config.js';
 import dotenv from 'dotenv'
 dotenv.config()
 import './config/passport.js'
-import spinUp from './services/spinUp.js';
 
 
-if(process.env.NODE_ENV === 'production'){
-  spinUp() 
-}
 
 
 
@@ -32,7 +28,7 @@ app.use(
       resave: false,
       saveUninitialized: false,
     })
-  );
+  ); 
 app.use(passport.initialize())
 app.use(passport.session())
 

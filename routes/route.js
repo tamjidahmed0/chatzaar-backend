@@ -1,5 +1,5 @@
 import { Router } from "express";
-import Chats from "../controllers/Chats.js";
+// import Chats from "../controllers/Chats.js";
 import historyController from "../controllers/history-controller.js";
 import getAllMessage from "../controllers/getAllMessage.js";
 import passport from "passport";
@@ -8,12 +8,16 @@ import validateToken from "../middleware/validateToken.js";
 import deleteHistory from "../controllers/delete-history.js";
 import healthController from "../controllers/healthController.js";
 import credit from "../controllers/credit.js";
-
+import Chats from "../controllers/Chats.js";
+import loginController from "../controllers/loginController.js";
+ 
 const router = Router() 
 
 
-router.route('/health').get( healthController);
+router.route('/health').get(healthController);
+router.route('/login').post(loginController)
 
+// router.route('/chats').post(validateToken, Chats);
 router.route('/chats').post(validateToken, Chats);
 router.route('/history').get(validateToken, historyController);
 
