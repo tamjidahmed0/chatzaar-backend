@@ -14,7 +14,7 @@ import loginController from "../controllers/loginController.js";
 const router = Router() 
 
 
-router.route('/health').get(healthController);
+
 router.route('/login').post(loginController)
 
 // router.route('/chats').post(validateToken, Chats);

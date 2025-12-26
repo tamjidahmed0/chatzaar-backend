@@ -19,7 +19,7 @@ const loginController = async(req, res) => {
 
         if (userSchema !== null) {
             const token = jwt.sign(
-                { email:userSchema.email, id: userSchema._id },
+                { email:userSchema.email, id: userSchema._id }, 
                 process.env.JWT_SECRET,
                 { expiresIn: "1d" }
             );
